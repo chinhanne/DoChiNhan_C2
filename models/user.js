@@ -1,12 +1,16 @@
 let mongoose = require('mongoose');
 
-let categorySchema = mongoose.Schema({
-    categoryName:{
+let userSchema = mongoose.Schema({
+    userName:{
         type:String,
         required:true,
         unique:true
     },
-    description:{
+    email:{
+        type:String,
+        default:""
+    },
+    password:{
         type:String,
         default:""
     },
@@ -19,4 +23,4 @@ let categorySchema = mongoose.Schema({
 })
 
 module.exports=
-mongoose.model('categories',categorySchema)
+mongoose.model('users',userSchema)
