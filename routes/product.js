@@ -8,7 +8,7 @@ let BuildQueies = require('../Utils/BuildQuery')
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
   let queries = req.query;
-  let products = await productSchema.find(BuildQueies.QueryProduct(queries));
+  let products = await productSchema.find(BuildQueies.QueryProduct(queries)).populate("categoryID");
   res.send(products);
 });
 router.get('/:id', async function(req, res, next) {
@@ -44,6 +44,25 @@ router.put('/:id', async function(req, res, next) {
       body,{new:true});
     res.status(200).send({
       success:true,
+      data:product
+    });
+  } catch (error) {
+    res.status(404).send({
+      success:fail,
+      message:error.message
+    })
+  }
+});
+router.delete('/:id', async function(req, res, next) {
+  try {
+    let product = await productSchema.findByIdAndUpdate(
+      req.params.id,
+      { isDeleted: true },
+      { new: true }
+    );
+    res.status(200).send({
+      success:true,
+      message: "Product deleted successfully",
       data:product
     });
   } catch (error) {
